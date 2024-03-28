@@ -160,7 +160,7 @@ export default {
                     input: e => {
                         this.input = e.target.value;
 
-                        this.throttledGetSuggested();
+                        //this.throttledGetSuggested();
                     },
                     keydown: e => {
                         if (e.key === 'Backspace' && this.removeOnBackspace) {
