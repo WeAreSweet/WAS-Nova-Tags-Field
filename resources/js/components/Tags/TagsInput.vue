@@ -28,6 +28,7 @@ export default {
 
     created() {
         this.throttledGetSuggested = throttle(this.getSuggested, 400);
+        this.getSuggested(true);
     },
 
     computed: {
@@ -80,7 +81,8 @@ export default {
         clearInput() {
             this.input = '';
 
-            this.suggestions = [];
+            // Don't clear suggestions
+            // this.suggestions = [];
         },
 
         handleBackspace() {
@@ -89,8 +91,8 @@ export default {
             }
         },
 
-        getSuggested() {
-            if (!this.input) {
+        getSuggested(force = false) {
+            if (!this.input && !force) {
                 this.suggestions = [];
 
                 return;
@@ -115,7 +117,7 @@ export default {
                 .then(response => {
                     // If the input was cleared by the time the request finished,
                     // clear the suggestions too.
-                    if (!this.input) {
+                    if (!this.input && !force) {
                         this.suggestions = [];
 
                         return;
@@ -164,7 +166,7 @@ export default {
                         if (e.key === 'Backspace' && this.removeOnBackspace) {
                             this.handleBackspace();
                         }
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' || e.key === ',') {
                             e.preventDefault();
                             this.addTag();
                         }
